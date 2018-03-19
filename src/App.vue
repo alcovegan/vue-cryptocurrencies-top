@@ -124,6 +124,7 @@
 
 <script>
 import axios from 'axios'
+import combineSymbols from './helpers/combineSymbolCodes'
 const UPDATE_INTERVAL = 60 * 1000
 
 export default {
@@ -171,16 +172,13 @@ export default {
 			return Number(change) > 0 ? this.priceUpStyles : this.priceDroppedStyles
 		},
 		getCurrencyImage: function(symbol) {
-			if(symbol === 'MIOTA') {
-				symbol = 'IOT'
-			} else if (symbol === 'BCC') {
-				symbol = 'BCCOIN'
-			}
+
+			symbol = combineSymbols(symbol);
 
 			const imagePath = this.assets[symbol];
-			const image = imagePath !== undefined ? imagePath.ImageUrl.replace('/', '') : 'empty.jpg'
+			const image = imagePath !== undefined ? imagePath.ImageUrl.replace('/', '') : 'empty'
 
-			return `https://www.cryptocompare.com/${image}`
+			return image !== 'empty' ? `https://www.cryptocompare.com/${image}` : 'empty.svg'
 		},
 		showInSelectedCurrency: function(currencyObject) {
 			const selectedCurrency = this.selectedCurrency.toLowerCase();
