@@ -12,7 +12,20 @@
       "marketCap": "Market Cap",
       "currencies": {
       	"USD": "US Dollar",
-      	"RUB": "Russian ruble"
+      	"RUB": "Russian ruble",
+      	"AUD": "Australian Dollar",
+      	"BRL": "Brazilian Real",
+      	"CAD": "Canadian dollar",
+      	"CHF": "Swiss Franc",
+      	"CNY": "Chinese Yuan",
+      	"EUR": "Euro",
+      	"GBP": "Pound sterling",
+      	"HKD": "Hong Kong dollar",
+      	"IDR": "Indonesian Rupiah",
+      	"INR": "Indian Rupee",
+      	"JPY": "Japan Yen",
+      	"KRW": "South Korean Won",
+      	"MXN": "Mexican Peso"
       }
   },
   "ru": {
@@ -27,7 +40,20 @@
       "marketCap": "Капитализация",
       "currencies": {
       	"USD": "Доллар США",
-      	"RUB": "Российский рубль"
+      	"RUB": "Российский рубль",
+      	"AUD": "Австралийский доллар",
+      	"BRL": "Бразильский реал",
+      	"CAD": "Канадский доллар",
+      	"CHF": "Швейцарский франк",
+      	"CNY": "Китайский юань",
+      	"EUR": "Евро",
+      	"GBP": "Фунт стерлингов",
+      	"HKD": "Гонконгский доллар",
+      	"IDR": "Индонезийская рупия",
+      	"INR": "Индийская рупия",
+      	"JPY": "Японская иена",
+      	"KRW": "Южнокорейская вона",
+      	"MXN": "Мексиканское песо"
       }
   }
 }
@@ -53,19 +79,19 @@
 						</select>
 						<select class="custom-select selectors__currency" name="currency__choise" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="selectedCurrency">
 							<option value="USD">USD ({{ $t('currencies.USD') }})</option>
-							<option value="AUD">AUD</option>
-							<option value="BRL">BRL</option>
-							<option value="CAD">CAD</option>
-							<option value="CHF">CHF</option>
-							<option value="CNY">CNY</option>
-							<option value="EUR">EUR</option>
-							<option value="GBP">GBP</option>
-							<option value="HKD">HKD</option>
-							<option value="IDR">IDR</option>
-							<option value="INR">INR</option>
-							<option value="JPY">JPY</option>
-							<option value="KRW">KRW</option>
-							<option value="MXN">MXN</option>
+							<option value="AUD">AUD ({{ $t('currencies.AUD') }})</option>
+							<option value="BRL">BRL ({{ $t('currencies.BRL') }})</option>
+							<option value="CAD">CAD ({{ $t('currencies.CAD') }})</option>
+							<option value="CHF">CHF ({{ $t('currencies.CHF') }})</option>
+							<option value="CNY">CNY ({{ $t('currencies.CNY') }})</option>
+							<option value="EUR">EUR ({{ $t('currencies.EUR') }})</option>
+							<option value="GBP">GBP ({{ $t('currencies.GBP') }})</option>
+							<option value="HKD">HKD ({{ $t('currencies.HKD') }})</option>
+							<option value="IDR">IDR ({{ $t('currencies.IDR') }})</option>
+							<option value="INR">INR ({{ $t('currencies.INR') }})</option>
+							<option value="JPY">JPY ({{ $t('currencies.JPY') }})</option>
+							<option value="KRW">KRW ({{ $t('currencies.KRW') }})</option>
+							<option value="MXN">MXN ({{ $t('currencies.MXN') }})</option>
 							<option value="RUB">RUB ({{ $t('currencies.RUB') }})</option>
 						</select>
 
