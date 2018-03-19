@@ -97,7 +97,7 @@
 							</td>
 
 							<td v-if="!isFetching" v-cloak>
-								{{ showCurrencySymbol(showInSelectedCurrency(currency).convertedPrice) }}
+								{{ currencyFormatter(showInSelectedCurrency(currency).convertedPrice) }}
 							</td>
 
 							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_1h)">
