@@ -34,37 +34,40 @@
 <template>
 	<div id="app">
 		<div class="container">
-			<div class="row">
+			<div class="row d-block">
 				<h1>Рейтинг криптовалют</h1>
-				<select name="currency__amount" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="amount">
-					<option value="10">10</option>
-					<option value="20">20</option>
-					<option value="30">30</option>
-					<option value="50">50</option>
-					<option value="100">100</option>
-				</select>
-				<select name="currency__choise" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="selectedCurrency">
-					<option value="USD">USD ({{ $t('currencies.USD') }})</option>
-					<option value="AUD">AUD</option>
-					<option value="BRL">BRL</option>
-					<option value="CAD">CAD</option>
-					<option value="CHF">CHF</option>
-					<option value="CNY">CNY</option>
-					<option value="EUR">EUR</option>
-					<option value="GBP">GBP</option>
-					<option value="HKD">HKD</option>
-					<option value="IDR">IDR</option>
-					<option value="INR">INR</option>
-					<option value="JPY">JPY</option>
-					<option value="KRW">KRW</option>
-					<option value="MXN">MXN</option>
-					<option value="RUB">RUB ({{ $t('currencies.RUB') }})</option>
-				</select>
 
-				<select v-model="locale">
-					<option>ru</option>
-					<option>en</option>
-				</select>
+				<div class="selectors">
+					<select name="currency__amount" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="amount">
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select>
+					<select name="currency__choise" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="selectedCurrency">
+						<option value="USD">USD ({{ $t('currencies.USD') }})</option>
+						<option value="AUD">AUD</option>
+						<option value="BRL">BRL</option>
+						<option value="CAD">CAD</option>
+						<option value="CHF">CHF</option>
+						<option value="CNY">CNY</option>
+						<option value="EUR">EUR</option>
+						<option value="GBP">GBP</option>
+						<option value="HKD">HKD</option>
+						<option value="IDR">IDR</option>
+						<option value="INR">INR</option>
+						<option value="JPY">JPY</option>
+						<option value="KRW">KRW</option>
+						<option value="MXN">MXN</option>
+						<option value="RUB">RUB ({{ $t('currencies.RUB') }})</option>
+					</select>
+
+					<select v-model="locale">
+						<option>ru</option>
+						<option>en</option>
+					</select>
+				</div>
 
 				<table class="table">
 					<thead>
@@ -82,13 +85,34 @@
 					<tbody>
 						<tr v-for="(currency, index) in rating">
 						<th scope="row">{{ index + 1 }}</th>
-							<td><img :src="getCurrencyImage(currency.symbol)" class="currency__image">{{ currency.name }}</td>
-							<td>{{ currency.symbol }}</td>
-							<td v-if="!isFetching" v-cloak>{{ showCurrencySymbol(showInSelectedCurrency(currency).convertedPrice) }}</td>
-							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_1h)">{{ currency.percent_change_1h }}</td>
-							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_24h)">{{ currency.percent_change_24h }}</td>
-							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_7d)">{{ currency.percent_change_7d }}</td>
-							<td v-if="!isFetching" v-cloak>{{ showCurrencySymbol(showInSelectedCurrency(currency).convertedPriceMC) }}</td>
+
+							<td><img :src="getCurrencyImage(currency.symbol)" class="currency__image">
+								{{ currency.name }}
+							</td>
+
+							<td>
+								{{ currency.symbol }}
+							</td>
+
+							<td v-if="!isFetching" v-cloak>
+								{{ showCurrencySymbol(showInSelectedCurrency(currency).convertedPrice) }}
+							</td>
+
+							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_1h)">
+								{{ currency.percent_change_1h }}
+							</td>
+
+							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_24h)">
+								{{ currency.percent_change_24h }}
+							</td>
+
+							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_7d)">
+								{{ currency.percent_change_7d }}
+							</td>
+
+							<td v-if="!isFetching" v-cloak>
+								{{ showCurrencySymbol(showInSelectedCurrency(currency).convertedPriceMC) }}
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -262,5 +286,9 @@ export default {
 	.currency__image {
 		max-width: 25px;
 		margin-right: 10px;
+	}
+
+	.selectors {
+		margin: 1rem 0;
 	}
 </style>
