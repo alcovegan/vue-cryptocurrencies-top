@@ -282,6 +282,10 @@ export default {
 </script>
 
 <style>
+	body {
+		margin-top: 2rem;
+	}
+
 	[v-cloak] {
 	  visibility: hidden;
 	}
