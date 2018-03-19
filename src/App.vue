@@ -111,7 +111,7 @@
 							</td>
 
 							<td v-if="!isFetching" v-cloak>
-								{{ showCurrencySymbol(showInSelectedCurrency(currency).convertedPriceMC) }}
+								{{ currencyFormatter(showInSelectedCurrency(currency).convertedPriceMC) }}
 							</td>
 						</tr>
 					</tbody>
@@ -243,6 +243,16 @@ export default {
 
 
 			return `${currencySymbols[this.selectedCurrency].symbol} ${price}`
+		},
+		currencyFormatter(price) {
+			const formatter = new Intl.NumberFormat(this.locale, {
+				style: "currency",
+				currencyDisplay: "symbol",
+				minimumFractionDigits: 0,
+				currency: this.selectedCurrency
+			});
+
+			return formatter.format(price)
 		}
 	},
 	computed: {
