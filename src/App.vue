@@ -1,6 +1,7 @@
 <i18n>
 {
   "en": {
+  	  "pageTitle": "Cryptocurrencies Rating (Top 100)",
       "rank": "Rank",
       "name": "Name",
       "symbol": "Symbol",
@@ -15,6 +16,7 @@
       }
   },
   "ru": {
+      "pageTitle": "Рейтинг криптовалют (Топ 100)",
       "rank": "Позиция",
       "name": "Название",
       "symbol": "Символ",
@@ -35,7 +37,7 @@
 	<div id="app">
 		<div class="container">
 			<div class="row d-block">
-				<h1>Рейтинг криптовалют</h1>
+				<h1>{{ $t('pageTitle') }}</h1>
 
 				<div class="selectors">
 					<select name="currency__amount" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="amount">
