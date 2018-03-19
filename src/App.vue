@@ -36,88 +36,101 @@
 <template>
 	<div id="app">
 		<div class="container">
-			<div class="row d-block">
-				<h1>{{ $t('pageTitle') }}</h1>
+			<div class="row">
 
-				<div class="selectors">
-					<select name="currency__amount" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="amount">
-						<option value="10">10</option>
-						<option value="20">20</option>
-						<option value="30">30</option>
-						<option value="50">50</option>
-						<option value="100">100</option>
-					</select>
-					<select name="currency__choise" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="selectedCurrency">
-						<option value="USD">USD ({{ $t('currencies.USD') }})</option>
-						<option value="AUD">AUD</option>
-						<option value="BRL">BRL</option>
-						<option value="CAD">CAD</option>
-						<option value="CHF">CHF</option>
-						<option value="CNY">CNY</option>
-						<option value="EUR">EUR</option>
-						<option value="GBP">GBP</option>
-						<option value="HKD">HKD</option>
-						<option value="IDR">IDR</option>
-						<option value="INR">INR</option>
-						<option value="JPY">JPY</option>
-						<option value="KRW">KRW</option>
-						<option value="MXN">MXN</option>
-						<option value="RUB">RUB ({{ $t('currencies.RUB') }})</option>
-					</select>
-
-					<select v-model="locale">
-						<option>ru</option>
-						<option>en</option>
-					</select>
+				<div class="col-12">
+					<h1 class="page-title">{{ $t('pageTitle') }}</h1>
 				</div>
 
-				<table class="table">
-					<thead>
-						<tr>
-						<th>{{ $t('rank') }}</th>
-						<th>{{ $t('name') }}</th>
-						<th>{{ $t('symbol') }}</th>
-						<th>{{ $t('price') }} ({{ selectedCurrency }})</th>
-						<th>{{ $t('oneHourPercent') }}</th>
-						<th>{{ $t('twentyFourPercent') }}</th>
-						<th>{{ $t('weeklyPercent') }}</th>
-						<th>{{ $t('marketCap') }} ({{ selectedCurrency }})</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="(currency, index) in rating">
-						<th scope="row">{{ index + 1 }}</th>
+				<div class="col-12">
+					<div class="selectors d-flex flex-column flex-md-row">
+						<select class="custom-select selectors__results-count" name="currency__amount" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="amount">
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="30">30</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+						</select>
+						<select class="custom-select selectors__currency" name="currency__choise" id="" @change="fetchAPI(amount, selectedCurrency)" v-model="selectedCurrency">
+							<option value="USD">USD ({{ $t('currencies.USD') }})</option>
+							<option value="AUD">AUD</option>
+							<option value="BRL">BRL</option>
+							<option value="CAD">CAD</option>
+							<option value="CHF">CHF</option>
+							<option value="CNY">CNY</option>
+							<option value="EUR">EUR</option>
+							<option value="GBP">GBP</option>
+							<option value="HKD">HKD</option>
+							<option value="IDR">IDR</option>
+							<option value="INR">INR</option>
+							<option value="JPY">JPY</option>
+							<option value="KRW">KRW</option>
+							<option value="MXN">MXN</option>
+							<option value="RUB">RUB ({{ $t('currencies.RUB') }})</option>
+						</select>
 
-							<td><img :src="getCurrencyImage(currency.symbol)" class="currency__image">
-								{{ currency.name }}
-							</td>
+						<select class="custom-select selectors__language" v-model="locale">
+							<option>ru</option>
+							<option>en</option>
+						</select>
+					</div>
+				</div>
 
-							<td>
-								{{ currency.symbol }}
-							</td>
+				<div class="col-12">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+								<th>{{ $t('rank') }}</th>
+								<th>{{ $t('name') }}</th>
+								<th>{{ $t('symbol') }}</th>
+								<th>{{ $t('price') }} ({{ selectedCurrency }})</th>
+								<th>{{ $t('oneHourPercent') }}</th>
+								<th>{{ $t('twentyFourPercent') }}</th>
+								<th>{{ $t('weeklyPercent') }}</th>
+								<th>{{ $t('marketCap') }} ({{ selectedCurrency }})</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(currency, index) in rating">
+								<th scope="row">{{ index + 1 }}</th>
 
-							<td v-if="!isFetching" v-cloak>
-								{{ currencyFormatter(showInSelectedCurrency(currency).convertedPrice) }}
-							</td>
+									<td><img :src="getCurrencyImage(currency.symbol)" class="currency__image">
+										{{ currency.name }}
+									</td>
 
-							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_1h)">
-								{{ currency.percent_change_1h }}
-							</td>
+									<td>
+										{{ currency.symbol }}
+									</td>
 
-							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_24h)">
-								{{ currency.percent_change_24h }}
-							</td>
+									<td v-if="!isFetching" v-cloak>
+										{{ currencyFormatter(showInSelectedCurrency(currency).convertedPrice) }}
+									</td>
 
-							<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_7d)">
-								{{ currency.percent_change_7d }}
-							</td>
+									<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_1h)">
+										{{ currency.percent_change_1h }}
+									</td>
 
-							<td v-if="!isFetching" v-cloak>
-								{{ currencyFormatter(showInSelectedCurrency(currency).convertedPriceMC) }}
-							</td>
-						</tr>
-					</tbody>
-				</table>
+									<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_24h)">
+										{{ currency.percent_change_24h }}
+									</td>
+
+									<td v-if="!isFetching" v-cloak :class="percentChanged(currency.percent_change_7d)">
+										{{ currency.percent_change_7d }}
+									</td>
+
+									<td v-if="!isFetching" v-cloak>
+										{{ currencyFormatter(showInSelectedCurrency(currency).convertedPriceMC) }}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+
+
 			</div>
 		</div>
 
@@ -290,6 +303,10 @@ export default {
 	  visibility: hidden;
 	}
 
+	.page-title {
+		font-size: 2rem;
+	}
+
 	.currency__price-up:before {
 		content: '+';
 		position: absolute;
@@ -312,5 +329,31 @@ export default {
 
 	.selectors {
 		margin: 1rem 0;
+	}
+
+	.selectors__results-count {
+		flex-basis: 15%;
+	}
+
+	.selectors__currency {
+
+	}
+
+	.selectors__language {
+		flex-basis: 15%;
+	}
+
+	@media screen and (min-width: 768px) {
+		.page-title {
+			font-size: 2.5rem;
+		}
+
+		.selectors {
+			max-width: 70%;
+		}
+
+		.selectors__currency {
+			margin: 0 .5rem;
+		}
 	}
 </style>
