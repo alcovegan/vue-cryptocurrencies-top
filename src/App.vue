@@ -182,7 +182,7 @@ export default {
 		},
 		showInSelectedCurrency: function(currencyObject) {
 			const selectedCurrency = this.selectedCurrency.toLowerCase();
-			const convertedPrice = currencyObject[`price_${selectedCurrency}`];
+			const convertedPrice = Number(currencyObject[`price_${selectedCurrency}`]).toFixed(2);
 			const convertedPrice24h = currencyObject[`24h_volume_${selectedCurrency}`];
 			const convertedPriceMC = currencyObject[`market_cap_${selectedCurrency}`];
 
@@ -271,10 +271,13 @@ export default {
 
 	.currency__price-up:before {
 		content: '+';
+		position: absolute;
+		left: 0;
 	}
 
 	.currency__price-up {
 		color: green;
+		position: relative;
 	}
 
 	.currency__price-down {
