@@ -193,66 +193,71 @@ export default {
 			}
 		},
 		showCurrencySymbol: function(price) {
-			const currencySymbols = {
-				"USD": {
-					symbol: "$"
-				},
-				"AUD": {
-					symbol: "$"
-				},
-				"BRL": {
-					symbol: "R$"
-				},
-				"CAD": {
-					symbol: "$"
-				},
-				"CHF": {
-					symbol: "Fr"
-				},
-				"CNY": {
-					symbol: "¥"
-				},
-				"EUR": {
-					symbol: "€"
-				},
-				"GBP": {
-					symbol: "£"
-				},
-				"HKD": {
-					symbol: "$"
-				},
-				"IDR": {
-					symbol: "Rp"
-				},
-				"INR": {
-					symbol: "₹"
-				},
-				"JPY": {
-					symbol: "¥"
-				},
-				"KRW": {
-					symbol: "₩"
-				},
-				"MXN": {
-					symbol: "$"
-				},
-				"RUB": {
-					symbol: "₽"
-				}
-			}
 
-
-			return `${currencySymbols[this.selectedCurrency].symbol} ${price}`
 		},
 		currencyFormatter(price) {
-			const formatter = new Intl.NumberFormat(this.locale, {
-				style: "currency",
-				currencyDisplay: "symbol",
-				minimumFractionDigits: 0,
-				currency: this.selectedCurrency
-			});
 
-			return formatter.format(price)
+			if(!global.Intl) {
+				const currencySymbols = {
+					"USD": {
+						symbol: "$"
+					},
+					"AUD": {
+						symbol: "$"
+					},
+					"BRL": {
+						symbol: "R$"
+					},
+					"CAD": {
+						symbol: "$"
+					},
+					"CHF": {
+						symbol: "Fr"
+					},
+					"CNY": {
+						symbol: "¥"
+					},
+					"EUR": {
+						symbol: "€"
+					},
+					"GBP": {
+						symbol: "£"
+					},
+					"HKD": {
+						symbol: "$"
+					},
+					"IDR": {
+						symbol: "Rp"
+					},
+					"INR": {
+						symbol: "₹"
+					},
+					"JPY": {
+						symbol: "¥"
+					},
+					"KRW": {
+						symbol: "₩"
+					},
+					"MXN": {
+						symbol: "$"
+					},
+					"RUB": {
+						symbol: "₽"
+					}
+				}
+
+
+				return `${currencySymbols[this.selectedCurrency].symbol} ${price}`
+			} else {
+				const formatter = new Intl.NumberFormat(this.locale, {
+					style: "currency",
+					currencyDisplay: "symbol",
+					minimumFractionDigits: 0,
+					currency: this.selectedCurrency
+				});
+
+				return formatter.format(price)
+			}
 		}
 	},
 	computed: {
