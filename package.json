@@ -1,8 +1,8 @@
 {
   "name": "cryptocurrencies",
-  "description": "A Vue.js project",
+  "description": "Cryptocurrencies rating with Vue.JS",
   "version": "1.0.0",
-  "author": "Aleksandr Sh. <alcovegan@gmail.com>",
+  "author": "Aleksandr Sharabarov <alcovegan@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
