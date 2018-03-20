@@ -166,20 +166,26 @@
 <script>
 import axios from 'axios'
 import combineSymbols from './helpers/combineSymbolCodes'
-const UPDATE_INTERVAL = 60 * 1000
+
+const ls = window.localStorage;
+
+const UPDATE_INTERVAL = ls.getItem('cryptorating_default_update_interval') || 60 * 1000;
+const DEFAULT_CURRENCY = ls.getItem('cryptorating_default_currency') || 'USD';
+const DEFAULT_LIMIT = ls.getItem('cryptorating_default_limit') || 10;
+const DEFAULT_LOCALE = ls.getItem('cryptorating_default_locale');
 
 export default {
 	name: 'app',
 	data () {
 		return {
-			amount: 10,
-			selectedCurrency: 'USD',
+			amount: DEFAULT_LIMIT,
+			selectedCurrency: DEFAULT_CURRENCY,
 			rating: [],
 			assets: {},
 			priceDroppedStyles: 'currency__price-down',
 			priceUpStyles: 'currency__price-up',
 			isFetching: false,
-			locale: this.$i18n.locale || 'en'
+			locale: DEFAULT_LOCALE || this.$i18n.locale || 'en'
 		}
 	},
 	watch: {
