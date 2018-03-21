@@ -3,6 +3,10 @@
   "en": {
   	  "pageTitle": "Cryptocurrencies Rating (Top 100)",
   	  "settingsTitle": "Default settings",
+  	  "settings": {
+		"toggleTextShow": "Show",
+		"toggleTextHide": "Hide"
+  	  },
       "rank": "Rank",
       "name": "Name",
       "symbol": "Symbol",
@@ -32,6 +36,10 @@
   "ru": {
       "pageTitle": "Рейтинг криптовалют (Топ 100)",
       "settingsTitle": "Настройки по умолчанию",
+  	  "settings": {
+		"toggleTextShow": "Показать",
+		"toggleTextHide": "Скрыть"
+  	  },
       "rank": "Позиция",
       "name": "Название",
       "symbol": "Символ",
@@ -105,8 +113,13 @@
 				</div>
 
 				<div class="col-12">
-					<h5>{{ $t('settingsTitle') }}</h5>
-					<div class="settings d-flex">
+					<h5>
+						{{ $t('settingsTitle') }}
+						<span class="settings__toggle-visible" @click="toggleSettings">
+							{{ isSettingsHidden ? $t('settings.toggleTextShow') : $t('settings.toggleTextHide') }}
+						</span>
+					</h5>
+					<div class="settings d-flex" :class='{ "settings--hidden": isSettingsHidden }'>
 						<div class="settings__limit">
 							<select class="custom-select" name="default-limit" id="settings-limit" v-model="amount" @change="changeDefaultLimit">
 								<option value="10">10</option>
@@ -222,6 +235,7 @@ export default {
 	name: 'app',
 	data () {
 		return {
+			isSettingsHidden: true,
 			amount: DEFAULT_LIMIT,
 			selectedCurrency: DEFAULT_CURRENCY,
 			rating: [],
@@ -238,6 +252,9 @@ export default {
 		}
 	},
 	methods: {
+		toggleSettings() {
+			this.isSettingsHidden = !this.isSettingsHidden;
+		},
 		changeDefaultLimit() {
 			ls.setItem("cryptorating_default_limit", this.amount);
 		},
@@ -428,8 +445,17 @@ export default {
 		flex-basis: 15%;
 	}
 
+	.settings__toggle-visible {
+		font-size: 0.75rem;
+		cursor: pointer;
+	}
+
 	.settings {
 		margin-bottom: 1rem;
+	}
+
+	.settings--hidden {
+		display: none !important;
 	}
 
 	.settings > div:not(:last-child) {
