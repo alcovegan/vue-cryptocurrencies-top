@@ -427,7 +427,7 @@ export default {
 	}
 
 	.settings > div:not(:last-child) {
-		margin-right: 1rem;
+		margin-right: .5rem;
 	}
 
 	@media screen and (min-width: 768px) {
