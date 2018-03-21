@@ -136,7 +136,7 @@
 						</div>
 
 						<div class="settings__locale">
-							<select class="custom-select" name="default-locale" id="settings-locale">
+							<select class="custom-select" name="default-locale" id="settings-locale" v-model="locale" @change="changeDefaultLocale">
 								<option value="en">EN</option>
 								<option value="ru">RU</option>
 							</select>
@@ -238,6 +238,9 @@ export default {
 	methods: {
 		changeDefaultLimit() {
 			ls.setItem("cryptorating_default_limit", this.amount);
+		},
+		changeDefaultLocale() {
+			ls.setItem("cryptorating_default_locale", this.locale)
 		},
 		fetchAPI: function(limit = this.amount, convert = '') {
 			console.log('start fetching');
