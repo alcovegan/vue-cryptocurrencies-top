@@ -156,6 +156,11 @@
 								<option value="ru">RU</option>
 							</select>
 						</div>
+
+						<div class="settings__update-interval d-flex">
+							<input class="form-control settings__update-interval-input" type="number" v-model="updateInterval">
+							<button type="button" class="btn btn-success" @click="changeDefaultUpdateInterval">Сохранить</button>
+						</div>
 					</div>
 				</div>
 
@@ -226,7 +231,7 @@ import combineSymbols from './helpers/combineSymbolCodes'
 
 const ls = window.localStorage;
 
-const UPDATE_INTERVAL = ls.getItem('cryptorating_default_update_interval') || 60 * 1000;
+const UPDATE_INTERVAL = parseInt(ls.getItem('cryptorating_default_update_interval')) || 60;
 const DEFAULT_CURRENCY = ls.getItem('cryptorating_default_currency') || 'USD';
 const DEFAULT_LIMIT = ls.getItem('cryptorating_default_limit') || 10;
 const DEFAULT_LOCALE = ls.getItem('cryptorating_default_locale');
@@ -235,6 +240,7 @@ export default {
 	name: 'app',
 	data () {
 		return {
+			updateInterval: UPDATE_INTERVAL,
 			isSettingsHidden: true,
 			amount: DEFAULT_LIMIT,
 			selectedCurrency: DEFAULT_CURRENCY,
@@ -264,6 +270,9 @@ export default {
 		changeDefaultCurrency() {
 			ls.setItem("cryptorating_default_currency", this.selectedCurrency);
 			this.fetchAPI(this.amount, this.selectedCurrency);
+		},
+		changeDefaultUpdateInterval() {
+			ls.setItem("cryptorating_default_update_interval", this.updateInterval);
 		},
 		fetchAPI: function(limit = this.amount, convert = '') {
 			console.log('start fetching');
@@ -388,7 +397,7 @@ export default {
 
 		this.interval = setInterval(() => {
 			this.fetchAPI(this.amount, this.selectedCurrency);
-		}, UPDATE_INTERVAL);
+		}, this.updateInterval * 1000);
 	},
 	beforeDestroy: function(){
 		clearInterval(this.interval);
@@ -459,6 +468,11 @@ export default {
 	}
 
 	.settings > div:not(:last-child) {
+		margin-right: .5rem;
+	}
+
+	.settings__update-interval-input {
+		max-width: 70px;
 		margin-right: .5rem;
 	}
 
