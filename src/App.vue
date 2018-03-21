@@ -116,7 +116,7 @@
 						</div>
 
 						<div class="settings__currency">
-							<select class="custom-select" name="default-currency" id="settings-currency">
+							<select class="custom-select" name="default-currency" id="settings-currency" v-model="selectedCurrency" @change="changeDefaultCurrency">
 								<option value="USD">USD ({{ $t('currencies.USD') }})</option>
 								<option value="AUD">AUD ({{ $t('currencies.AUD') }})</option>
 								<option value="BRL">BRL ({{ $t('currencies.BRL') }})</option>
@@ -240,7 +240,11 @@ export default {
 			ls.setItem("cryptorating_default_limit", this.amount);
 		},
 		changeDefaultLocale() {
-			ls.setItem("cryptorating_default_locale", this.locale)
+			ls.setItem("cryptorating_default_locale", this.locale);
+		},
+		changeDefaultCurrency() {
+			ls.setItem("cryptorating_default_currency", this.selectedCurrency);
+			this.fetchAPI(this.amount, this.selectedCurrency);
 		},
 		fetchAPI: function(limit = this.amount, convert = '') {
 			console.log('start fetching');
@@ -251,6 +255,7 @@ export default {
 
 			axios.get(requestURL)
 				.then(response => {
+					console.log(response);
 					this.rating = response.data;
 					this.isFetching = false;
 				})
@@ -358,10 +363,9 @@ export default {
 
 	},
 	created: function() {
-		// var self = this;
 
 		this.fetchAssets();
-		this.fetchAPI(this.amount);
+		this.fetchAPI(this.amount, this.selectedCurrency);
 
 		this.interval = setInterval(() => {
 			this.fetchAPI(this.amount, this.selectedCurrency);
