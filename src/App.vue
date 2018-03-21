@@ -106,7 +106,7 @@
 					<h5>Настройки</h5>
 					<div class="settings d-flex">
 						<div class="settings__limit">
-							<select class="custom-select" name="default-limit" id="settings-limit">
+							<select class="custom-select" name="default-limit" id="settings-limit" v-model="amount" @change="changeDefaultLimit">
 								<option value="10">10</option>
 								<option value="20">20</option>
 								<option value="30">30</option>
@@ -236,7 +236,10 @@ export default {
 		}
 	},
 	methods: {
-		fetchAPI: function(limit = 10, convert = '') {
+		changeDefaultLimit() {
+			ls.setItem("cryptorating_default_limit", this.amount);
+		},
+		fetchAPI: function(limit = this.amount, convert = '') {
 			console.log('start fetching');
 
 			const requestURL = `https://api.coinmarketcap.com/v1/ticker/?limit=${limit}&convert=${convert}`;
@@ -355,7 +358,7 @@ export default {
 		// var self = this;
 
 		this.fetchAssets();
-		this.fetchAPI(10);
+		this.fetchAPI(this.amount);
 
 		this.interval = setInterval(() => {
 			this.fetchAPI(this.amount, this.selectedCurrency);
