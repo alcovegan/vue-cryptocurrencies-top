@@ -103,6 +103,48 @@
 				</div>
 
 				<div class="col-12">
+					<h5>Настройки</h5>
+					<div class="settings d-flex">
+						<div class="settings__limit">
+							<select class="custom-select" name="default-limit" id="settings-limit">
+								<option value="10">10</option>
+								<option value="20">20</option>
+								<option value="30">30</option>
+								<option value="50">50</option>
+								<option value="100">100</option>
+							</select>
+						</div>
+
+						<div class="settings__currency">
+							<select class="custom-select" name="default-currency" id="settings-currency">
+								<option value="USD">USD ({{ $t('currencies.USD') }})</option>
+								<option value="AUD">AUD ({{ $t('currencies.AUD') }})</option>
+								<option value="BRL">BRL ({{ $t('currencies.BRL') }})</option>
+								<option value="CAD">CAD ({{ $t('currencies.CAD') }})</option>
+								<option value="CHF">CHF ({{ $t('currencies.CHF') }})</option>
+								<option value="CNY">CNY ({{ $t('currencies.CNY') }})</option>
+								<option value="EUR">EUR ({{ $t('currencies.EUR') }})</option>
+								<option value="GBP">GBP ({{ $t('currencies.GBP') }})</option>
+								<option value="HKD">HKD ({{ $t('currencies.HKD') }})</option>
+								<option value="IDR">IDR ({{ $t('currencies.IDR') }})</option>
+								<option value="INR">INR ({{ $t('currencies.INR') }})</option>
+								<option value="JPY">JPY ({{ $t('currencies.JPY') }})</option>
+								<option value="KRW">KRW ({{ $t('currencies.KRW') }})</option>
+								<option value="MXN">MXN ({{ $t('currencies.MXN') }})</option>
+								<option value="RUB">RUB ({{ $t('currencies.RUB') }})</option>
+							</select>
+						</div>
+
+						<div class="settings__locale">
+							<select class="custom-select" name="default-locale" id="settings-locale">
+								<option value="en">EN</option>
+								<option value="ru">RU</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-12">
 					<div class="table-responsive">
 						<table class="table">
 							<thead>
@@ -293,7 +335,6 @@ export default {
 					}
 				}
 
-
 				return `${currencySymbols[this.selectedCurrency].symbol} ${price}`
 			} else {
 				const formatter = new Intl.NumberFormat(this.locale, {
@@ -373,6 +414,14 @@ export default {
 
 	.selectors__language {
 		flex-basis: 15%;
+	}
+
+	.settings {
+		margin-bottom: 1rem;
+	}
+
+	.settings > div:not(:last-child) {
+		margin-right: 1rem;
 	}
 
 	@media screen and (min-width: 768px) {
