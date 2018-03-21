@@ -2,6 +2,7 @@
 {
   "en": {
   	  "pageTitle": "Cryptocurrencies Rating (Top 100)",
+  	  "settingsTitle": "Default settings",
       "rank": "Rank",
       "name": "Name",
       "symbol": "Symbol",
@@ -30,6 +31,7 @@
   },
   "ru": {
       "pageTitle": "Рейтинг криптовалют (Топ 100)",
+      "settingsTitle": "Настройки по умолчанию",
       "rank": "Позиция",
       "name": "Название",
       "symbol": "Символ",
@@ -103,7 +105,7 @@
 				</div>
 
 				<div class="col-12">
-					<h5>Настройки</h5>
+					<h5>{{ $t('settingsTitle') }}</h5>
 					<div class="settings d-flex">
 						<div class="settings__limit">
 							<select class="custom-select" name="default-limit" id="settings-limit" v-model="amount" @change="changeDefaultLimit">
