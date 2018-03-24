@@ -2,6 +2,11 @@
 {
   "en": {
   	  "pageTitle": "Cryptocurrencies Rating (Top 100)",
+  	  "settingsTitle": "Default settings",
+  	  "settings": {
+		"toggleTextShow": "Show",
+		"toggleTextHide": "Hide"
+  	  },
       "rank": "Rank",
       "name": "Name",
       "symbol": "Symbol",
@@ -30,6 +35,11 @@
   },
   "ru": {
       "pageTitle": "Рейтинг криптовалют (Топ 100)",
+      "settingsTitle": "Настройки по умолчанию",
+  	  "settings": {
+		"toggleTextShow": "Показать",
+		"toggleTextHide": "Скрыть"
+  	  },
       "rank": "Позиция",
       "name": "Название",
       "symbol": "Символ",
@@ -103,6 +113,58 @@
 				</div>
 
 				<div class="col-12">
+					<h5>
+						{{ $t('settingsTitle') }}
+						<span class="settings__toggle-visible" @click="toggleSettings">
+							{{ isSettingsHidden ? $t('settings.toggleTextShow') : $t('settings.toggleTextHide') }}
+						</span>
+					</h5>
+					<div class="settings d-flex" :class='{ "settings--hidden": isSettingsHidden }'>
+						<div class="settings__limit">
+							<select class="custom-select" name="default-limit" id="settings-limit" v-model="amount" @change="changeDefaultLimit">
+								<option value="10">10</option>
+								<option value="20">20</option>
+								<option value="30">30</option>
+								<option value="50">50</option>
+								<option value="100">100</option>
+							</select>
+						</div>
+
+						<div class="settings__currency">
+							<select class="custom-select" name="default-currency" id="settings-currency" v-model="selectedCurrency" @change="changeDefaultCurrency">
+								<option value="USD">USD ({{ $t('currencies.USD') }})</option>
+								<option value="AUD">AUD ({{ $t('currencies.AUD') }})</option>
+								<option value="BRL">BRL ({{ $t('currencies.BRL') }})</option>
+								<option value="CAD">CAD ({{ $t('currencies.CAD') }})</option>
+								<option value="CHF">CHF ({{ $t('currencies.CHF') }})</option>
+								<option value="CNY">CNY ({{ $t('currencies.CNY') }})</option>
+								<option value="EUR">EUR ({{ $t('currencies.EUR') }})</option>
+								<option value="GBP">GBP ({{ $t('currencies.GBP') }})</option>
+								<option value="HKD">HKD ({{ $t('currencies.HKD') }})</option>
+								<option value="IDR">IDR ({{ $t('currencies.IDR') }})</option>
+								<option value="INR">INR ({{ $t('currencies.INR') }})</option>
+								<option value="JPY">JPY ({{ $t('currencies.JPY') }})</option>
+								<option value="KRW">KRW ({{ $t('currencies.KRW') }})</option>
+								<option value="MXN">MXN ({{ $t('currencies.MXN') }})</option>
+								<option value="RUB">RUB ({{ $t('currencies.RUB') }})</option>
+							</select>
+						</div>
+
+						<div class="settings__locale">
+							<select class="custom-select" name="default-locale" id="settings-locale" v-model="locale" @change="changeDefaultLocale">
+								<option value="en">EN</option>
+								<option value="ru">RU</option>
+							</select>
+						</div>
+
+						<div class="settings__update-interval d-flex">
+							<input class="form-control settings__update-interval-input" type="number" v-model="updateInterval">
+							<button type="button" class="btn btn-success" @click="changeDefaultUpdateInterval">Сохранить</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-12">
 					<div class="table-responsive">
 						<table class="table">
 							<thead>
@@ -166,20 +228,28 @@
 <script>
 import axios from 'axios'
 import combineSymbols from './helpers/combineSymbolCodes'
-const UPDATE_INTERVAL = 60 * 1000
+
+const ls = window.localStorage;
+
+const UPDATE_INTERVAL = parseInt(ls.getItem('cryptorating_default_update_interval')) || 60;
+const DEFAULT_CURRENCY = ls.getItem('cryptorating_default_currency') || 'USD';
+const DEFAULT_LIMIT = ls.getItem('cryptorating_default_limit') || 10;
+const DEFAULT_LOCALE = ls.getItem('cryptorating_default_locale');
 
 export default {
 	name: 'app',
 	data () {
 		return {
-			amount: 10,
-			selectedCurrency: 'USD',
+			updateInterval: UPDATE_INTERVAL,
+			isSettingsHidden: true,
+			amount: DEFAULT_LIMIT,
+			selectedCurrency: DEFAULT_CURRENCY,
 			rating: [],
 			assets: {},
 			priceDroppedStyles: 'currency__price-down',
 			priceUpStyles: 'currency__price-up',
 			isFetching: false,
-			locale: this.$i18n.locale || 'en'
+			locale: DEFAULT_LOCALE || this.$i18n.locale || 'en'
 		}
 	},
 	watch: {
@@ -188,7 +258,23 @@ export default {
 		}
 	},
 	methods: {
-		fetchAPI: function(limit = 10, convert = '') {
+		toggleSettings() {
+			this.isSettingsHidden = !this.isSettingsHidden;
+		},
+		changeDefaultLimit() {
+			ls.setItem("cryptorating_default_limit", this.amount);
+		},
+		changeDefaultLocale() {
+			ls.setItem("cryptorating_default_locale", this.locale);
+		},
+		changeDefaultCurrency() {
+			ls.setItem("cryptorating_default_currency", this.selectedCurrency);
+			this.fetchAPI(this.amount, this.selectedCurrency);
+		},
+		changeDefaultUpdateInterval() {
+			ls.setItem("cryptorating_default_update_interval", this.updateInterval);
+		},
+		fetchAPI: function(limit = this.amount, convert = '') {
 			console.log('start fetching');
 
 			const requestURL = `https://api.coinmarketcap.com/v1/ticker/?limit=${limit}&convert=${convert}`;
@@ -197,6 +283,7 @@ export default {
 
 			axios.get(requestURL)
 				.then(response => {
+					console.log(response);
 					this.rating = response.data;
 					this.isFetching = false;
 				})
@@ -287,7 +374,6 @@ export default {
 					}
 				}
 
-
 				return `${currencySymbols[this.selectedCurrency].symbol} ${price}`
 			} else {
 				const formatter = new Intl.NumberFormat(this.locale, {
@@ -305,14 +391,13 @@ export default {
 
 	},
 	created: function() {
-		// var self = this;
 
 		this.fetchAssets();
-		this.fetchAPI(10);
+		this.fetchAPI(this.amount, this.selectedCurrency);
 
 		this.interval = setInterval(() => {
 			this.fetchAPI(this.amount, this.selectedCurrency);
-		}, UPDATE_INTERVAL);
+		}, this.updateInterval * 1000);
 	},
 	beforeDestroy: function(){
 		clearInterval(this.interval);
@@ -367,6 +452,28 @@ export default {
 
 	.selectors__language {
 		flex-basis: 15%;
+	}
+
+	.settings__toggle-visible {
+		font-size: 0.75rem;
+		cursor: pointer;
+	}
+
+	.settings {
+		margin-bottom: 1rem;
+	}
+
+	.settings--hidden {
+		display: none !important;
+	}
+
+	.settings > div:not(:last-child) {
+		margin-right: .5rem;
+	}
+
+	.settings__update-interval-input {
+		max-width: 70px;
+		margin-right: .5rem;
 	}
 
 	@media screen and (min-width: 768px) {
