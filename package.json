@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "deploy": "cross-env cp index.html deploy/index.html && cp empty.svg deploy/empty.svg && cp -r dist/ deploy/dist && cd deploy/ && now"
+    "deploy": "cross-env npm run build && cp index.html deploy/index.html && cp empty.svg deploy/empty.svg && cp -r dist/ deploy/dist && cd deploy/ && now --public"
   },
   "dependencies": {
     "vue": "^2.3.3"
